@@ -5,14 +5,12 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import TreeStruct from '@/components/TreeStruct.vue'
+import TreeStruct from "@/components/TreeStruct.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    TreeStruct
+    TreeStruct,
   },
-  
-}
+};
 </script>

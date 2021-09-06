@@ -6,101 +6,46 @@
       multiple
       allow-batch
       whole-row
-      @item-click="itemClick"
-      @item-toggle="toggleHandle"
+      @item-toggle="toggleHandler"
     ></v-jstree>
   </div>
 </template>
 <script>
 import VJstree from "vue-jstree";
+import axios from "axios";
+
+const instance = axios.create({
+  baseURL: "http://localhost:3000/data",
+});
 
 export default {
   components: {
     VJstree,
   },
+  created() {
+    this.getDivision();
+  },
   data() {
     return {
-      data: [
-        {
-          text: "Same but with checkboxes",
-          children: [
-            {
-              text: "initially selected",
-              selected: true,
-            },
-            {
-              text: "custom icon",
-              icon: "fa fa-warning icon-state-danger",
-            },
-            {
-              text: "initially open",
-              icon: "fa fa-folder icon-state-default",
-              opened: true,
-              children: [
-                {
-                  text: "Another node",
-                },
-              ],
-            },
-            {
-              text: "custom icon",
-              icon: "fa fa-warning icon-state-warning",
-            },
-            {
-              text: "disabled node",
-              icon: "fa fa-check icon-state-success",
-              disabled: true,
-            },
-          ],
-        },
-        {
-          text: "Same but with checkboxes",
-          opened: true,
-          children: [
-            {
-              text: "initially selected",
-              selected: true,
-            },
-            {
-              text: "custom icon",
-              icon: "fa fa-warning icon-state-danger",
-            },
-            {
-              text: "initially open",
-              icon: "fa fa-folder icon-state-default",
-              opened: true,
-              children: [
-                {
-                  text: "Another node",
-                },
-              ],
-            },
-            {
-              text: "custom icon",
-              icon: "fa fa-warning icon-state-warning",
-            },
-            {
-              text: "disabled node",
-              icon: "fa fa-check icon-state-success",
-              disabled: true,
-            },
-          ],
-        },
-        {
-          text: "And wholerow selection",
-        },
-      ],
+      data: [],
     };
   },
 
   methods: {
-    itemClick(node) {
-      console.log(node.model.text + " clicked !");
+    getDivision() {
+      instance
+        .get("/division")
+        .then((response) => {
+          this.data = response.data.response;
+        })
+        .catch((error) => {
+          alert(error.response.error);
+        });
     },
-  },
-  toggleHandle(node, item) {
-    console.log("node:", node);
-    console.log("item:", item);
+    toggleHandler(node, item) {
+      console.log("node:", node);
+      console.log("item:", item);
+    },
   },
 };
 </script>
