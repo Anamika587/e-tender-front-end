@@ -7,13 +7,18 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'Data',
     component: Home
   },
   {
     path: '/upload',
     name: 'Upload',
     component: () => import(/* webpackChunkName: "about" */ '../views/Upload.vue')
+  },
+  {
+    path: '/data',
+    name: "Data",
+    component: Home
   }
 ]
 
