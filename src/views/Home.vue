@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <TreeStruct/>
+    <TreeStruct />
   </div>
 </template>
 
@@ -12,6 +12,7 @@ export default {
   name: 'Home',
   components: {
     TreeStruct
-  }
+  },
+  
 }
 </script>
