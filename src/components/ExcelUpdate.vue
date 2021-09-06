@@ -33,7 +33,7 @@
     <p class="mt-20">Please Download Following Excel File To Add Data</p>
     <div class="mt-5">
       <a
-        href="assets/template/Property_Master.xlsx"
+        href="template/Property_Master.xlsx"
         class="px-4 py-2 border rounded capitalize"
         download="Property Master.xlsx"
       >
