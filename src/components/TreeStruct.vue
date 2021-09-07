@@ -56,44 +56,6 @@ export default {
         .get(`/ssg/${divisionId}`)
         .then((res) => {
           const response = res.data.response;
-
-          let pgroup = response.map((pg) => {
-            return {
-              ssgId: pg.ssgId,
-              text: pg.pgroup,
-              level: "pgroup",
-              children: [{}],
-            };
-          });
-
-          let sector = response.map((sec) => {
-            return {
-              text: sec.sector,
-              level: "sector",
-              children: pgroup.filter((ele) => ele.text == sec.pgroup),
-            };
-          });
-
-          let station = response.map((sta) => {
-            return {
-              text: sta.station,
-              level: "station",
-              children: sector.filter((ele) => ele.text == sta.sector),
-            };
-          });
-
-          const idx = this.data.findIndex((d) => d.divisionId == divisionId);
-
-          let division = this.data[idx];
-
-          division = {
-            ...division,
-            children: station,
-          };
-
-          const newUpdatedValue = this.data.splice(idx, 1, division);
-
-          this.data = newUpdatedValue;
         })
         .catch((error) => {
           alert(error);
