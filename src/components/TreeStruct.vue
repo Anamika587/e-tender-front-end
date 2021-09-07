@@ -1,19 +1,39 @@
 <template>
   <div class="mt-20 px-8">
     <h1>Tree Structure</h1>
-    <v-jstree
-      :data="data"
-      multiple
-      allow-batch
-      @item-toggle="clickHandler"
-      size="large"
-    ></v-jstree>
+    <vue-tree-list
+      :model="data"
+      @click="clickHandler"
+      @toggle="toggleHandler"
+      default-tree-node-name="new node"
+      default-leaf-node-name="new leaf"
+      v-bind:default-expanded="false"
+    >
+      <template v-slot:leafNameDisplay="slotProps">
+        <span class="capitalize">
+          {{ slotProps.model.name }}
+        </span>
+      </template>
+      <span class="icon" slot="treeNodeIcon">
+        <span class="mx-2">📂</span>
+      </span>
+      <span class="icon" style="display: none" slot="addTreeNodeIcon">📂</span>
+      <span class="icon" style="display: none" slot="addLeafNodeIcon">＋</span>
+      <span class="icon" slot="editNodeIcon">
+        <button
+          class="px-2 text-xs py-1 rounded mx-1 bg-blue-400 text-blue-100"
+        >
+          Edit
+        </button>
+      </span>
+      <span class="icon" slot="delNodeIcon"> ❌ </span>
+    </vue-tree-list>
 
-    <pre>{{ data }}</pre>
+    <pre>{{ rawData }}</pre>
   </div>
 </template>
 <script>
-import VJstree from "vue-jstree";
+import { VueTreeList, Tree, TreeNode } from "vue-tree-list";
 import axios from "axios";
 
 const instance = axios.create({
@@ -22,14 +42,15 @@ const instance = axios.create({
 
 export default {
   components: {
-    VJstree,
+    VueTreeList,
   },
   created() {
     this.getDivision();
   },
   data() {
     return {
-      data: [],
+      data: new Tree([]),
+      rawData: [],
     };
   },
 
@@ -39,15 +60,17 @@ export default {
         .get("/division")
         .then((res) => {
           const response = res.data.response;
-          this.data = response.map((res) => {
+          const localData = response.map((res) => {
             return {
               id: res.divisionId,
               divisionId: res.divisionId,
-              text: res.name,
+              name: res.name,
               level: "division",
               children: [{}],
             };
           });
+          this.data = new Tree(localData);
+          this.rawData = localData;
         })
         .catch((error) => {
           alert(error.response.error);
@@ -59,12 +82,11 @@ export default {
         .get(`/ssg/${divisionId}`)
         .then((res) => {
           const response = res.data.response;
-          let localData = this.data;
-          const idx = localData.findIndex(
+          const idx = this.rawData.findIndex(
             (ele) => ele.divisionId == divisionId
           );
-          this.data[idx].children = response;
-          localStorage.setItem("data", this.data);
+          this.rawData[idx].children = response;
+          this.data = new Tree(this.rawData);
         })
         .catch((error) => {
           alert(error);
@@ -83,12 +105,17 @@ export default {
         });
     },
 
-    clickHandler(node, item) {
+    clickHandler(item) {
+      item.toggle();
+
       if (item.level == "division") {
         this.getSSG(item.divisionId);
       } else if (item.level == "ssg") {
         this.getFRE(item.ssgId);
       }
+    },
+    toggleHandler(item) {
+      console.log(item);
     },
   },
 };
