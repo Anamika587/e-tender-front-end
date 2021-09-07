@@ -5,10 +5,11 @@
       :data="data"
       multiple
       allow-batch
-      whole-row
       @item-toggle="clickHandler"
       size="large"
     ></v-jstree>
+
+    <pre>{{ data }}</pre>
   </div>
 </template>
 <script>
@@ -40,6 +41,7 @@ export default {
           const response = res.data.response;
           this.data = response.map((res) => {
             return {
+              id: res.divisionId,
               divisionId: res.divisionId,
               text: res.name,
               level: "division",
@@ -52,10 +54,17 @@ export default {
         });
     },
     getSSG(divisionId) {
+      if (!divisionId) return;
       instance
         .get(`/ssg/${divisionId}`)
         .then((res) => {
           const response = res.data.response;
+          let localData = this.data;
+          const idx = localData.findIndex(
+            (ele) => ele.divisionId == divisionId
+          );
+          this.data[idx].children = response;
+          localStorage.setItem("data", this.data);
         })
         .catch((error) => {
           alert(error);
