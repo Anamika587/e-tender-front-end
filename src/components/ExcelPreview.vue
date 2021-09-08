@@ -6,6 +6,7 @@
 <script>
 import Vue from "vue";
 import { SpreadsheetPlugin } from "@syncfusion/ej2-vue-spreadsheet";
+import {mapState} from 'vuex'
 
 Vue.use(SpreadsheetPlugin);
 export default {
@@ -14,15 +15,12 @@ export default {
       openUrl: 'https://ej2services.syncfusion.com/production/web-services/api/spreadsheet/open',
     }
   },
+  computed: mapState(['fileUploaded']),
   methods: {
     created: function () {
-         fetch("https://js.syncfusion.com/demos/ejservices/data/Spreadsheet/LargeData.xlsx") // fetch the remote url
-                .then((response) => {
-                    response.blob().then((fileBlob) => { // convert the excel file to blob
-                    var file = new File([fileBlob], "Sample.xlsx"); //convert the blob into file
-                    this.$refs.spreadsheet.open({ file: file }); // open the file into Spreadsheet
-                    })
-                })
+      console.log(this.fileUploaded);
+                    var file = new File([this.fileUploaded], "Sample.xlsx"); //convert the blob into file
+                    this.$refs.spreadsheet.open({ file: file }); 
       }
     }
 }

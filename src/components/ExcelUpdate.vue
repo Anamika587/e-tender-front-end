@@ -23,20 +23,11 @@
     />
 
     <button
-      v-if="isFileChoose"
+      v-if="isFileUploaded"
       @click="uploadFile"
       class="px-4 py-2 my-2 block text-white capitalize border bg-gray-600"
     >
       upload file
-    </button>
-
-
-    <button
-      v-if="isFileChoose"
-
-      class="px-4 py-2 my-2 block text-white capitalize border bg-gray-600"
-    >
-      <router-link to="/preview">preview</router-link> 
     </button>
 
     <p class="mt-20">Please Download Following Excel File To Add Data</p>
@@ -54,24 +45,33 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
+import { base64StringToBlob } from 'blob-util';
 
 const instance = axios.create({
   baseURL: "http://localhost:3000",
 });
 
 export default {
+  name: "ExcelUpdate",
+  computed: mapState(["isFileUploaded"]),
   data() {
     return {
-      isFileChoose: false,
-      file: "",
+      file: null,
     };
   },
   methods: {
-    handleFileUpload() {
+    async handleFileUpload() {
       this.file = this.$refs.file.files[0];
-
-      this.isFileChoose = true;
+      this.$store.commit("uploadedFile", this.file);
+      this.$store.commit("setFileUpload");
     },
+    // toBase64: (file) => new Promise((resolve, reject) => {
+    // const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.onload = () => resolve(reader.result);
+    // reader.onerror = error => reject(error);
+    // }),
     uploadFile() {
       let formData = new FormData();
       formData.append("file", this.file);
