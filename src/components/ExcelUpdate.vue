@@ -30,6 +30,15 @@
       upload file
     </button>
 
+
+    <button
+      v-if="isFileChoose"
+
+      class="px-4 py-2 my-2 block text-white capitalize border bg-gray-600"
+    >
+      <router-link to="/preview">preview</router-link> 
+    </button>
+
     <p class="mt-20">Please Download Following Excel File To Add Data</p>
     <div class="mt-5">
       <a

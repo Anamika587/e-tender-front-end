@@ -19,6 +19,12 @@ const routes = [
     path: '/data',
     name: "Data",
     component: Home
+  },
+  {
+    path:'/preview',
+    name: "preview",
+    component: () => import(/* webpackChunkName: "about" */ '../components/ExcelPreview.vue')
+    
   }
 ]
 
