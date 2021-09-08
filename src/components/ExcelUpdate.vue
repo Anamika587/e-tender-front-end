@@ -10,9 +10,12 @@
       text-white
     "
   >
-    <h1>Choose Excel File to Upload</h1>
+  <a href="/data" class="px-4 py-2 my-10 border rounded capitalize text-white">
+    View Tree Structure
+  </a>
+    <h1 class="mb-5">Choose Excel File to Upload</h1>
     <input
-      class="w-96 px-4 py-2 my-2 mx-2 block rounded border-gray-100 border"
+      class="w-96 px-4 py-2 my-2 mx-2 block rounded border-white border"
       type="file"
       accept=".xlsx"
       name="name"
@@ -30,7 +33,7 @@
       upload file
     </button>
 
-    <p class="mt-20">Please Download Following Excel File To Add Data</p>
+    <p class="my-10">Please Download Following Excel File To Add Data</p>
     <div class="mt-5">
       <a
         href="template/Property_Master.xlsx"
@@ -93,5 +96,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+a {
+  color: white;
+}
 </style>

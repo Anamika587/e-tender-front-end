@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/data',
     name: "Data",
-    component: Home
+    component: () => import(/* webpackChunkName: "about" */ '../components/TreeStructDisp.vue')
   },
   {
     path:'/preview',

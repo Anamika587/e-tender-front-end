@@ -1,16 +1,15 @@
 <template>
-  <div class="home">
-    <TreeStruct />
-  </div>
+  <hello-world />
 </template>
 
 <script>
-import TreeStruct from "@/components/TreeStruct.vue";
+  import HelloWorld from '../components/HelloWorld'
 
-export default {
-  name: "Home",
-  components: {
-    TreeStruct,
-  },
-};
+  export default {
+    name: 'Home',
+
+    components: {
+      HelloWorld,
+    },
+  }
 </script>
