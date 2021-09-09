@@ -64,10 +64,12 @@ export default {
     };
   },
   methods: {
-    async handleFileUpload() {
+    handleFileUpload() {
+      this.$store.commit('setIsFileUpload')
+      console.log("File bool", this.isFileUploaded);
       this.file = this.$refs.file.files[0];
-      this.$store.commit("uploadedFile", this.file);
       this.$store.commit("setFileUpload");
+      this.$store.commit("uploadedFile", this.file);
     },
     // toBase64: (file) => new Promise((resolve, reject) => {
     // const reader = new FileReader();

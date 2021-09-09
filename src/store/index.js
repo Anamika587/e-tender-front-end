@@ -14,6 +14,10 @@ export default new Vuex.Store({
     },
     uploadedFile(state, uploadedfile) {
       state.fileUploaded = uploadedfile
+      console.log("[state] file changed");
+    },
+    setIsFileUpload(state) {
+      state.isFileUploaded = false
     }
   },
   actions: {

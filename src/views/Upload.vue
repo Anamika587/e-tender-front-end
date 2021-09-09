@@ -1,5 +1,6 @@
 <template>
   <div class="main-screen">
+    <p v-if="isFileUploaded">rerender happen</p>
     <div v-if="isFileUploaded" class="excel-pre-col">
       <ExcelPreview />
     </div>
