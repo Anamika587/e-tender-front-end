@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-if="item.ssgId" v-model="dialog" persistent max-width="600px">
+  <v-dialog v-if="item.ssgId" v-model="editDialog" persistent max-width="600px">
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         color="primary"
@@ -39,44 +39,39 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="dialog = false">
+        <v-btn color="blue darken-1" text @click="editDialog = false">
           Close
         </v-btn>
-        <v-btn color="blue darken-1" text @click="edit(item)"> Edit </v-btn>
+        <Pop  :item="item" :reservePrice="reservePrice" :emd="emd"/>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import axios from "axios"
-const instance = axios.create({
-  baseURL: "http://localhost:3000/data",
-});
+import Pop from '../components/Pop.vue'
 
 export default {
+  components:{
+    Pop
+  },
+  methods:{
+    defaultValue(item) {
+      console.log(item);
+      this.reservePrice = item.reservePrice;
+      this.emd = item.emd;
+    },
+    close(){
+      console.log("here")
+      this.editDialog = false
+    }
+  },
   data() {
     return {
-      dialog: false,
+      editDialog: false,
       reservePrice: 0,
       emd: 0,
     };
-  },
-  methods: {
-    edit(item) {
-      this.dialog = false;
-      var updateData = {
-        reservePrice: parseInt(this.reservePrice),
-        emd: parseInt(this.emd),
-      };
-      instance.patch("/ssg/" + item.ssgId, updateData).then(() => {
-        console.log(item);
-        item.name =
-          item.text + " [RP] " + this.reservePrice + " [EMD] " + this.emd;
-        item.emd = this.emd;
-        item.reservePrice = this.reservePrice;
-      });
-    },
   },
   props: {
     item: Object,

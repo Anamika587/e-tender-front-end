@@ -6,21 +6,24 @@
     activatable
     item-key="name"
     open-on-click
+    disable = false
     :load-children="clickHandler"
+    :filter="i=> i.name"
   >
     <template v-slot:prepend="{ item, open }">
-      <v-icon v-if="!item.file">
+      <v-icon v-if="!item.file ">
         {{ open ? "mdi-folder-open" : "mdi-folder" }}
       </v-icon>
-      <v-icon v-else>
+      <v-icon v-else-if="item.name">
         {{ files[item.file] }}
       </v-icon>
     </template>
-    <template v-slot:label="{ item }">
-      <div>{{ item.name }}</div>
+    <template  v-slot:label="{ item }">
+      <div v-if="item.name">{{ item.name }}</div>
     </template>
-    <template v-slot:append="{ item }">
-      <PopEdit :item="item" />
+    <template   v-slot:append="{ item }">
+      <PopEdit v-if="item.name" :item="item" />
+      <PopDelete v-if="item.name" @deleteNote="deleteNode(item)"  :item="item"/>
     </template>
   </v-treeview>
 </template>
@@ -28,12 +31,14 @@
 <script>
 import axios from "axios";
 import PopEdit from "../components/PopEdit.vue";
+import PopDelete from "../components/PopDelete.vue"
 const instance = axios.create({
   baseURL: "http://localhost:3000/data",
 });
 export default {
   components: {
     PopEdit,
+    PopDelete,
   },
   data: () => ({
     initiallyOpen: [],
@@ -51,29 +56,8 @@ export default {
     tree: [],
     on: false,
     items: [
-      {
-        name: "public",
-        children: [
-          {
-            name: "static",
-            children: [
-              {
-                name: "logo.png",
-                file: "home",
-              },
-            ],
-          },
-          {
-            name: "favicon.ico",
-            file: "png",
-          },
-          {
-            name: "index.html",
-            file: "html",
-          },
-        ],
-      },
     ],
+    fre:[]
   }),
   created() {
     this.getDivision();
@@ -113,6 +97,7 @@ export default {
         });
         this.initiallyOpen.push(item.name);
         item.children.push(...customizedResponse);
+        this.fre = item.children
       });
     },
     getSSG(item) {
@@ -140,11 +125,9 @@ export default {
         this.getFRE(item);
       }
     },
-    defaultValue(item) {
-      console.log(item);
-      this.reservePrice = item.reservePrice;
-      this.emd = item.emd;
-    },
+    deleteNode(item){
+      console.log("[Tree Struct Disp] called deleteNote");
+    }
   },
 };
 </script>
