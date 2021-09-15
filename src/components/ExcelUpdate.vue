@@ -66,8 +66,14 @@ export default {
   methods: {
     async handleFileUpload() {
       this.file = this.$refs.file.files[0];
-      this.$store.commit("uploadedFile", this.file);
-      this.$store.commit("setFileUpload");
+      if (this.file.size > 200 * 1024) {
+        alert('File too big (> 200KB)');
+        return;
+      }
+      else {
+        this.$store.commit("uploadedFile", this.file);
+        this.$store.commit("setFileUpload");
+      }
     },
     // toBase64: (file) => new Promise((resolve, reject) => {
     // const reader = new FileReader();
