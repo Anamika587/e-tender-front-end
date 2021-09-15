@@ -6,6 +6,7 @@
         dark
         v-bind="attrs"
         v-on="on"
+        small
       >
         Delete
       </v-btn>

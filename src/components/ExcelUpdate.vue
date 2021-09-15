@@ -66,7 +66,7 @@ export default {
   methods: {
     async handleFileUpload() {
       this.file = this.$refs.file.files[0];
-      if (this.file.size > 200 * 1024) {
+      if (this.file.size >  250* 1024) {
         alert('File too big (> 200KB)');
         return;
       }

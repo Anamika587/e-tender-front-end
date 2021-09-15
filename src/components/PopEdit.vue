@@ -6,6 +6,7 @@
         dark
         v-bind="attrs"
         v-on="on"
+        small
         v-on:click="defaultValue(item)"
       >
         Edit
